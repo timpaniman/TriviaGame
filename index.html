@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Trivia</title>
+
+    <!-- Our CSS style sheet -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery.js">
+    </script>
+
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="firstBox" class="jumbotron">
+            <h1 class="text-center"><strong>Trivia Game!</strong></h1>
+            <h4 id="timeRemain" class="text-center">Time passed (Total 10 seconds): </h4>
+
+        </div>
+        <br>
+        <div class="jumbotron">
+            <h3 id="instruction" class="text-center">Select the right answer within time limit: </h3>
+            <hr>
+
+            <div class="text-center">
+                <div id="questionSection">
+                </div>
+            </div>
+
+            <br>
+            <h1>
+                <div id="buttons">
+                    <button id="done">Done</button>
+                </div>
+            </h1>
+
+        </div>
+
+        <script>
+            var countRight = 0;
+            var questionArray = [{
+                        question: "Which of the following languages does NOT use the Latin alphabet?",
+                        choice1: "Turkish",
+                        choice2: "Swahili",
+                        choice3: "Vietnamese",
+                        choice4: "Georgian",
+                        answer: "Georgian"
+                    }, {
+                        question: "What company created and developed the game &quot;Overwatch&quot;?",
+                        choice1: "Valve",
+                        choice2: "Blizzard Entertainment",
+                        choice3: "Hi-Rez Studios",
+                        choice4: "Gearbox Software",
+                        answer: "Blizzard Entertainment"
+                    }, {
+                        question: "What ingredients are required to make a cake in Minecraft?",
+                        choice1: "Milk, Sugar, Egg, and Wheat",
+                        choice2: "Milk, Bread, Egg, and Wheat",
+                        choice3: "Milk, Sugar Cane, Egg, and Wheat",
+                        choice4: "Milk, Sugar, and Wheat",
+                        answer: "Milk, Sugar, and Wheat"
+                    }, {
+                        question: "How many flagship monsters appear in Monster Hunter Gernerations?",
+                        choice1: "1",
+                        choice2: "2",
+                        choice3: "3",
+                        choice4: "4",
+                        answer: "4"
+                    }, {
+                        question: "Which of the following characters is NOT a female marriage candidate in the game Stardew Valley?",
+                        choice1: "Abigail",
+                        choice2: "Caroline",
+                        choice3: "Haley",
+                        choice4: "Leah",
+                        answer: "Caroline"
+                    }, {
+                        question: "What caused the titular mascot of Yo-Kai Watch, Jibanyan, to become a yokai?",
+                        choice1: "Ate one too many chocobars",
+                        choice2: "Through a magical ritual",
+                        choice3: "Being run over by a truck",
+                        choice4: "When he put on the harmaki",
+                        answer: "Being run over by a truck"
+                    }
+
+                ]
+                /*var windowTimeout = setTimeout(
+                    doneTrivia,
+                    10000);
+                    */
+            var time = 0;
+
+            var clockRunning = false;
+
+            if (!clockRunning) {
+                intervalId = setInterval(count, 1000);
+                clockRunning = true;
+            };
+
+            function count() {
+
+                // DONE: increment time by 1, remember we cant use "this" here.
+                time++;
+                if (time == 10) {
+                    doneTrivia();
+                }
+                // DONE: Get the current time, pass that into the stopwatch.timeConverter function,
+                //       and save the result in a variable.
+                var converted = timeConverter(time);
+                console.log(converted);
+
+                // DONE: Use the variable we just created to show the converted time in the "display" div.
+                $("#timeRemain").text("Time passed (Total 10 seconds): " + converted);
+            }
+
+            function timeConverter(t) {
+
+                var minutes = Math.floor(t / 60);
+                var seconds = t - (minutes * 60);
+
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+
+                if (minutes === 0) {
+                    minutes = "00";
+                } else if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+
+                return minutes + ":" + seconds;
+            }
+
+            console.log(questionArray);
+
+
+            $("#done").on("click", doneTrivia);
+
+
+            for (var i = 0; i < questionArray.length; i++) {
+                $("#questionSection").append("<h4>" + (i + 1) + ". " + questionArray[i].question + "</h4> ");
+                $("#questionSection").append("<h4>")
+
+                $("#questionSection").append("<label >" +
+                    "<input id=\"radioClass" + i + "0\"type=\"radio\" value = " + "\"" + questionArray[i].choice1 + "\"" + " name=\"radio" + i + "\">" + questionArray[i].choice1 + " &nbsp &nbsp </label>  ");
+
+                $("#questionSection").append("<label >" +
+                    "<input id=\"radioClass" + i + "1\" type=\"radio\" value =" + "\"" + questionArray[i].choice2 + "\"" + "name=\"radio" + i + "\">" + questionArray[i].choice2 + "  &nbsp &nbsp </label>  ");
+
+                $("#questionSection").append("<label >" +
+                    "<input id=\"radioClass" + i + "2\" type=\"radio\" value =" + "\"" + questionArray[i].choice3 + "\"" + "name=\"radio" + i + "\">" + questionArray[i].choice3 + "  &nbsp &nbsp </label>  ");
+
+                $("#questionSection").append("<label >" +
+                    "<input id=\"radioClass" + i + "3\" type=\"radio\" value =" + "\"" + questionArray[i].choice4 + "\"" + "name=\"radio" + i + "\">" + questionArray[i].choice4 + "  &nbsp &nbsp </label>  ");
+
+
+
+
+            }
+
+            function doneTrivia() {
+                alert("10 seconds Timed out or Done with trivia.");
+                for (var j = 0; j < questionArray.length; j++) {
+                    for (var k = 0; k < 4; k++) {
+                        // alert($("#radioClass" + j + k).attr("value"));
+                        if ($("#radioClass" + j + k).attr("value") == questionArray[j].answer) {
+                            if ($("#radioClass" + j + k).is(":checked")) {
+
+                                countRight++;
+                            }
+                        }
+                        //console.log($("#radioClass" + j + k).attr("checked"));
+                    }
+                }
+                $("#questionSection").html("Count of right answers: " + countRight);
+                $("#timeRemain").text("Time passed (Total 10 seconds): ");
+                clearInterval(intervalId);
+                time = 0;
+                clockRunning = false;
+            }
+        </script>
+</body>
+
+</html>
